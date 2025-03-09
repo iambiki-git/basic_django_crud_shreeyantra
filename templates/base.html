@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Blogify{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <nav class="bg-blue-500 p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="text-white font-bold text-xl">
+                <a href="/">Blogify</a> 
+            </div>
+            <div class="space-x-4">
+                {% if request.user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="text-white hover:text-gray-300">Profile</a>
+                <a href="{% url 'logout' %}" class="text-white hover:text-gray-300">Logout</a>
+                {% else %}
+                <a href="{% url 'login' %}" class="text-white hover:text-gray-300">Login</a>
+                {% endif %} 
+            </div>
+        </div>
+    </nav>
+    
+
+    {% block content %}{% endblock %}
+
+    <footer class="bg-blue-500 p-4 text-white text-center">
+        &copy; 2021 Blogify 
+    </footer>
+
+
+    <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>
