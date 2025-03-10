@@ -4,8 +4,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import Post
-from .forms import PostForm  # Assuming you have a form for Post model
-
 
 
 # Create your views here.
@@ -112,19 +110,18 @@ def delete_post(request, post_id):
     return redirect('profile')  # Redirect back to the profile page
 
 
-
 def edit_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    
+
     if request.method == "POST":
-        # Process the form with the updated data
-        form = PostForm(request.POST, instance=post)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Post updated successfully!")
-            return redirect('profile')  # Redirect to the profile or post list page
-    else:
-        # Initial form with the current post's data
-        form = PostForm(instance=post)
-    
-    return render(request, 'edit_post.html', {'form': form})
+        title = request.POST.get("title")
+        content = request.POST.get("content")
+
+        post.title = title
+        post.content = content
+        post.save()
+        messages.success(request, "Post updated successfully!")
+
+        return redirect("/profile")  # Change "home" to the name of your post list view
+
+    return render(request, "edit_post.html", {"post": post})
